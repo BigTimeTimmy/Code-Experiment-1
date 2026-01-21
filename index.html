@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ink Story Preview</title>
+
+  <!-- InkJS library -->
+  <script src="https://cdn.jsdelivr.net/npm/inkjs@1.11.1/dist/ink.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    button {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      background: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>The Three Little Pigs</h1>
+  <div id="story"></div>
+
+  <script>
+    const inkSource = `
+Once upon a time...
+
+* There were three little pigs.
+
+- They lived happily ever after.
+-> Brickhouse
+
+=== Brickhouse
+
+The three little pigs, Porky, Bacon, and HogMog, lived in a brick house in the middle of the woods.
+
+But suddenly, "BANG!" A loud noise came from the kitchen.
+
+Porky and Bacon are scared and don't want to check the noise.
+
+HogMog tells both of them that all three need to find out what made the noise.
+
++[Go to Kitchen]
+-> Kitchen
+
++[Go to Bedroom]
+-> Bedroom
+
+=== Kitchen
+
+The kitchen is dark.
+
+Another loud "BANG!" comes from the garbage can.
+
++[Check out the noise]
+
+A mouse jumps out.
+
+It is Stuart Little.
+
+They laugh, make Pizza Rolls, and become neighbors.
+
+-> END
+
+=== Bedroom
+
+Bacon and Porky go to bed.
+
+A loud scream comes from the kitchen.
+
++[Lock the door]
+-> Bedroom1
+
++[Head to the kitchen]
+-> Kitchen1
+
+=== Bedroom1
+
+BANG! BANG! BANG!
+
+The door falls down.
+
+It is HogMog — with a mouse.
+
+They eat Pizza Rolls together.
+
+-> END
+
+=== Kitchen1
+
+They run into the dark kitchen.
+
+They bump into HogMog.
+
+The mouse introduces himself as Stuart Little.
+
+They eat Pizza Rolls together.
+
+-> END
+`;
+
+    const compiler = new inkjs.Compiler(inkSource);
+    const story = compiler.Compile();
+
+    const storyDiv = document.getElementById("story");
+
+    function render() {
+      storyDiv.innerHTML = "";
+
+      while (story.canContinue) {
+        const p = document.createElement("p");
+        p.textContent = story.Continue();
+        storyDiv.appendChild(p);
+      }
+
+      story.currentChoices.forEach(choice => {
+        const button = document.createElement("button");
+        button.textContent = choice.text;
+        button.onclick = () => {
+          story.ChooseChoiceIndex(choice.index);
+          render();
+        };
+        storyDiv.appendChild(button);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
