@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ink Story Preview</title>
+  <title>The Three Little Pigs (Ink Story)</title>
 
-  <!-- InkJS library -->
+  <!-- InkJS -->
   <script src="https://cdn.jsdelivr.net/npm/inkjs@1.11.1/dist/ink.js"></script>
 
   <style>
@@ -12,9 +12,9 @@
       font-family: Arial, sans-serif;
       background: #111;
       color: #eee;
-      padding: 20px;
       max-width: 800px;
       margin: auto;
+      padding: 20px;
     }
     button {
       display: block;
@@ -39,21 +39,20 @@
   <script>
     const inkSource = `
 Once upon a time...
-
-* There were three little pigs.
+there were three little pigs.
 
 - They lived happily ever after.
 -> Brickhouse
 
 === Brickhouse
 
-The three little pigs, Porky, Bacon, and HogMog, lived in a brick house in the middle of the woods.
+The three little pigs, Porky, Bacon, and HogMog, lived in a brick house in the middle of the woods. They had just finished dinner and were about to take a bath after a long day of work fixing all of the holes around the house.
 
-But suddenly, "BANG!" A loud noise came from the kitchen.
+But, suddenly, "BANG!" A loud noise came from the kitchen. Porky and Bacon are scared and don't want to check the noise.
 
-Porky and Bacon are scared and don't want to check the noise.
+HogMog tells both of them that all three of them need to go and find out what makes that noise.
 
-HogMog tells both of them that all three need to find out what made the noise.
+Porky and Bacon decide to...
 
 +[Go to Kitchen]
 -> Kitchen
@@ -63,39 +62,45 @@ HogMog tells both of them that all three need to find out what made the noise.
 
 === Kitchen
 
-The kitchen is dark.
+The three little pigs enter the kitchen, and the kitchen lights are all turned off. They begin shaking in fear.
 
-Another loud "BANG!" comes from the garbage can.
+Once again, a loud "BANG!" occurs, this time coming from the garbage can.
+
+Another loud "BANG!" happens again.
 
 +[Check out the noise]
 
+HogMog grabs the garbage can.
+
 A mouse jumps out.
 
-It is Stuart Little.
+It introduces itself as Stuart Little.
 
-They laugh, make Pizza Rolls, and become neighbors.
+They laugh, warm up Pizza Rolls, and become neighbors.
 
 -> END
 
 === Bedroom
 
-Bacon and Porky go to bed.
+Both Bacon and Porky head upstairs and go to bed.
 
 A loud scream comes from the kitchen.
 
 +[Lock the door]
 -> Bedroom1
 
-+[Head to the kitchen]
++[Head straight to the kitchen]
 -> Kitchen1
 
 === Bedroom1
 
 BANG! BANG! BANG!
 
-The door falls down.
+The door is knocked down.
 
-It is HogMog — with a mouse.
+It is HogMog — holding a mouse.
+
+The mouse introduces himself as Stuart Little.
 
 They eat Pizza Rolls together.
 
@@ -107,9 +112,11 @@ They run into the dark kitchen.
 
 They bump into HogMog.
 
+He explains the noise was a mouse.
+
 The mouse introduces himself as Stuart Little.
 
-They eat Pizza Rolls together.
+They warm up Pizza Rolls and become neighbors.
 
 -> END
 `;
@@ -117,15 +124,15 @@ They eat Pizza Rolls together.
     const compiler = new inkjs.Compiler(inkSource);
     const story = compiler.Compile();
 
-    const storyDiv = document.getElementById("story");
+    const container = document.getElementById("story");
 
     function render() {
-      storyDiv.innerHTML = "";
+      container.innerHTML = "";
 
       while (story.canContinue) {
         const p = document.createElement("p");
         p.textContent = story.Continue();
-        storyDiv.appendChild(p);
+        container.appendChild(p);
       }
 
       story.currentChoices.forEach(choice => {
@@ -135,7 +142,7 @@ They eat Pizza Rolls together.
           story.ChooseChoiceIndex(choice.index);
           render();
         };
-        storyDiv.appendChild(button);
+        container.appendChild(button);
       });
     }
 
